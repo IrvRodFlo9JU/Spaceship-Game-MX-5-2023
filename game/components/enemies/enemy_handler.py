@@ -1,21 +1,21 @@
 
 import random
 from game.components.enemies.ship import Ship
-from game.components.enemies.enemy_2 import Enemy_2
-from game.utils.constants import ENEMY_SHIP, ENEMY_TWO
+from game.components.enemies.randomship import Randomship
+from game.utils.constants import ENEMY_SHIP, ENEMY_RANDOMSHIP
 
 
 class EnemyHandler:
 
-    ENEMIES = ["ship", "enemy_2"]
+    ENEMIES = [ENEMY_SHIP, ENEMY_RANDOMSHIP]
 
     def __init__(self):
         self.enemies = []
     
-    def update(self):
+    def update(self, bullet_handler):
         self.add_enemy()
         for enemy in self.enemies:
-            enemy.update()
+            enemy.update(bullet_handler)
             if not enemy.is_alive:
                 self.remove_enemy(enemy) 
 
@@ -29,7 +29,7 @@ class EnemyHandler:
             if new_enemy == ENEMY_SHIP:
                 self.enemies.append(Ship())
             else:
-                self.enemies.append(Enemy_2())
+                self.enemies.append(Randomship())
     
     def remove_enemy(self, enemy):
         self.enemies.remove(enemy)

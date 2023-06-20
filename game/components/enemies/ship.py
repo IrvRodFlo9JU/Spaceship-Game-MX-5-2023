@@ -1,6 +1,6 @@
 import pygame
 from game.components.enemies.enemy import Enemy
-from game.utils.constants import ENEMY_1
+from game.utils.constants import SHIP
 
 
 class Ship(Enemy):
@@ -8,6 +8,6 @@ class Ship(Enemy):
     HEIGHT = 60
 
     def __init__(self):
-        self.image = ENEMY_1
+        self.image = SHIP
         self.image = pygame.transform.scale(self.image, (self.WIDTH, self.HEIGHT))
         super().__init__(self.image)

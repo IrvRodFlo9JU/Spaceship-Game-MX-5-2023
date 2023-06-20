@@ -6,6 +6,7 @@ class Spaceship:
     HEIGHT = 60 
     X_POS = SCREEN_WIDTH // 2 - WIDTH
     Y_POS = 500
+    LIFE = 5
 
     def __init__(self):
         self.image = SPACESHIP
@@ -13,6 +14,8 @@ class Spaceship:
         self.rect = self.image.get_rect()
         self.rect.x = self.X_POS
         self.rect.y = self.Y_POS
+        self.life = self.LIFE
+        self.is_alive = True
 
     def update(self, user_input):
         if user_input[pygame.K_LEFT] or user_input[pygame.K_a]:
@@ -43,3 +46,8 @@ class Spaceship:
         top_limit = SCREEN_HEIGHT // 2
         if self.rect.top > top_limit:
             self.rect.y -= 10
+
+    def hitted(self, damage):
+        self.life -= damage
+        if self.life == 0:
+            self.is_alive = False

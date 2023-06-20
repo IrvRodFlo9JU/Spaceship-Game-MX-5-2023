@@ -1,10 +1,9 @@
 import pygame
 import random 
 from game.components.enemies.enemy import Enemy
-from game.utils.constants import ENEMY_2
-from game.utils.constants import SCREEN_HEIGHT, SCREEN_WIDTH, LEFT, RIGHT, UP, DOWN
+from game.utils.constants import SCREEN_HEIGHT, SCREEN_WIDTH, LEFT, RIGHT, UP, DOWN, RANDOMSHIP
 
-class Enemy_2(Enemy):
+class Randomship(Enemy):
     WIDTH = 40
     HEIGHT = 60
     SPEED_X = 4
@@ -15,7 +14,7 @@ class Enemy_2(Enemy):
     MOV_Y = [UP, DOWN]
 
     def __init__(self):
-        self.image = ENEMY_2
+        self.image = RANDOMSHIP
         self.index_up = 0
         self.move_y = DOWN
         self.interval_x = random.choice(self.INTERVAL_X)
