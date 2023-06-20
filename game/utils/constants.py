@@ -26,8 +26,14 @@ BULLET = pygame.image.load(os.path.join(IMG_DIR, "Bullet/bullet_1.png"))
 
 BULLET_ENEMY = pygame.image.load(os.path.join(IMG_DIR, "Bullet/bullet_2.png"))
 ENEMY_1 = pygame.image.load(os.path.join(IMG_DIR, "Enemy/enemy_1.png"))
+ENEMY_2 = pygame.image.load(os.path.join(IMG_DIR, "Enemy/enemy_2.png"))
+
+ENEMY_SHIP = "ship"
+ENEMY_TWO = "enemy_2"
 
 FONT_STYLE = 'freesansbold.ttf'
 
 LEFT = 'left'
 RIGHT = 'right'
+UP = 'up'
+DOWN = 'down'

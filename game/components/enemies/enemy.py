@@ -28,7 +28,6 @@ class Enemy:
         self.move()
 
     def move(self):
-
         self.rect.y += self.SPEED_Y
 
         if self.move_x == LEFT:
