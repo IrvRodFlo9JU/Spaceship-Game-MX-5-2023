@@ -12,10 +12,10 @@ class EnemyHandler:
     def __init__(self):
         self.enemies = []
     
-    def update(self, bullet_handler):
+    def update(self, bullet_handler, player, explosion_handler):
         self.add_enemy()
         for enemy in self.enemies:
-            enemy.update(bullet_handler)
+            enemy.update(bullet_handler, player, explosion_handler)
             if not enemy.is_alive:
                 self.remove_enemy(enemy) 
 

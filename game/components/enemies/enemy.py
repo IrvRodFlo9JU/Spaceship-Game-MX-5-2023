@@ -1,6 +1,7 @@
 import random
 import pygame
-from game.utils.constants import SCREEN_HEIGHT, SCREEN_WIDTH, LEFT, RIGHT, BULLET_ENEMY_BASIC
+from game.utils.constants import SCREEN_HEIGHT, SCREEN_WIDTH, LEFT, RIGHT, BULLET_ENEMY_BASIC, EXPLOSION
+
 
 class Enemy:
     Y_POS = -5
@@ -9,9 +10,8 @@ class Enemy:
     SPEED_Y = 3
     MOV_X = [LEFT, RIGHT]
     INTERVAL = 100
-    SHOOTING_TIME = 30
 
-    def __init__(self, image):
+    def __init__(self, image, shooting_interval, life):
         self.image = image
         self.rect = self.image.get_rect()
         self.rect.x = random.choice(self.X_POS_LIST)
@@ -20,16 +20,20 @@ class Enemy:
         self.is_alive = True
         self.index = 0
         self.shooting_time = 0
+        self.shooting_interval = shooting_interval
+        self.damage = 2 
+        self.life = life
 
     def draw(self, screen):
         screen.blit(self.image, self.rect)
 
-    def update(self, bullet_handler):
+    def update(self, bullet_handler, player, explosion_handler):
         if self.rect.top >= SCREEN_HEIGHT:
             self.is_alive = False
         self.move()
         self.shooting_time += 1
         self.shoot(bullet_handler)
+        self.crash(player, explosion_handler, bullet_handler.bullets)
 
     def move(self):
         self.rect.y += self.SPEED_Y
@@ -48,7 +52,19 @@ class Enemy:
         self.index += 1
 
     def shoot(self, bullet_handler):
-        if self.shooting_time % self.SHOOTING_TIME == 0:
+        if self.shooting_time % self.shooting_interval == 0:
             bullet_handler.add_bullet(BULLET_ENEMY_BASIC, self.rect.center)
-        
 
+    def crash(self, player, explosion_handler, bullets):
+        if self.rect.colliderect(player.rect):
+            player.hitted(self.damage, explosion_handler)
+            self.die(explosion_handler)
+
+    def hitted(self, damage, explosion_handler):
+        self.life -= damage
+        if self.life <= 0:
+            self.die(explosion_handler)
+        
+    def die(self, explosion_handler):
+        explosion_handler.generate_explosion(self.WIDTH, self.HEIGHT, self.rect.center)
+        self.is_alive = False

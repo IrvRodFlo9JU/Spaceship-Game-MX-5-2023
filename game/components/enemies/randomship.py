@@ -12,6 +12,8 @@ class Randomship(Enemy):
     INTERVAL_X = [50, 70, 80, 100, 150]
     INTERVAL_Y = [20, 40, 50, 60, 75]
     MOV_Y = [UP, DOWN]
+    SHOOTING_INTERVALS = [20, 25, 30, 15]
+    LIFE = 1
 
     def __init__(self):
         self.image = RANDOMSHIP
@@ -20,7 +22,8 @@ class Randomship(Enemy):
         self.interval_x = random.choice(self.INTERVAL_X)
         self.interval_y = random.choice(self.INTERVAL_Y)
         self.image = pygame.transform.scale(self.image, (self.WIDTH, self.HEIGHT))
-        super().__init__(self.image)
+        self.shooting_interval = random.choice(self.SHOOTING_INTERVALS)
+        super().__init__(self.image, self.shooting_interval, self.LIFE)
     
     def move(self):
         if self.move_x == LEFT:
