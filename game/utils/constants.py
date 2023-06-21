@@ -21,6 +21,7 @@ HEART = pygame.image.load(os.path.join(IMG_DIR, 'Other/SmallHeart.png'))
 EXPLOSION = pygame.image.load(os.path.join(IMG_DIR, "Other/explosion.png"))
 
 SPACESHIP = pygame.image.load(os.path.join(IMG_DIR, "Spaceship/spaceship.png"))
+HEART_LIFE = pygame.image.load(os.path.join(IMG_DIR, 'Other/heart.png'))
 SPACESHIP_SHIELD = pygame.image.load(os.path.join(IMG_DIR, "Spaceship/spaceship_shield.png"))
 BULLET_PLAYER_B = pygame.image.load(os.path.join(IMG_DIR, "Bullet/bullet_1.png"))
 

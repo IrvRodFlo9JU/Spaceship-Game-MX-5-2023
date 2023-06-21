@@ -7,11 +7,12 @@ from game.utils.constants import ENEMY_SHIP, ENEMY_RANDOMSHIP
 
 class EnemyHandler:
 
-    ENEMIES = [ENEMY_SHIP, ENEMY_RANDOMSHIP]
 
     def __init__(self):
         self.enemies = []
         self.enemies_destroyed = 0
+        self.start_wave = True
+        self.enemies_options = [ENEMY_SHIP]
     
     def update(self, bullet_handler, player, explosion_handler):
         self.add_enemy()
@@ -27,12 +28,18 @@ class EnemyHandler:
             enemy.draw(screen)
 
     def add_enemy(self):
-        if len(self.enemies) <= 2:
-            new_enemy = random.choice(self.ENEMIES)
+        while len(self.enemies) <= 2:
+            new_enemy = random.choice(self.enemies_options)
             if new_enemy == ENEMY_SHIP:
                 self.enemies.append(Ship())
             else:
                 self.enemies.append(Randomship())
+
+        if self.start_wave:
+            self.enemies_options.append(ENEMY_RANDOMSHIP)
+    
+        self.start_wave = False
+        
     
     def remove_enemy(self, enemy):
         self.enemies.remove(enemy)
@@ -40,3 +47,6 @@ class EnemyHandler:
     def reset(self):
         self.enemies.clear()
         self.enemies_destroyed = 0  
+        self.start_wave = True
+        self.enemies_options = [ENEMY_SHIP]
+    

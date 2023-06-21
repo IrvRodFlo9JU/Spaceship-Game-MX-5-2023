@@ -66,3 +66,6 @@ class Spaceship:
         self.rect.y = self.Y_POS
         self.life = self.LIFE
         self.is_alive = True
+    
+    def up_life(self, buff):
+        self.life += buff
