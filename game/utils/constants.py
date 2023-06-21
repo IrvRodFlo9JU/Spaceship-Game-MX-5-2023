@@ -10,6 +10,7 @@ IMG_DIR = os.path.join(os.path.dirname(__file__), "..", "assets")
 
 # Assets Constants
 ICON = pygame.image.load(os.path.join(IMG_DIR, "Spaceship/spaceship.png"))
+TITLE_IMG = pygame.image.load(os.path.join(IMG_DIR, "Other/title.png"))
 
 SHIELD = pygame.image.load(os.path.join(IMG_DIR, 'Other/shield.png'))
 
@@ -35,6 +36,8 @@ ENEMY_SHIP = "ship"
 ENEMY_RANDOMSHIP = "randomship"
 
 FONT_STYLE = 'freesansbold.ttf'
+BLACK_COLOR = (0, 0, 0)
+WHITE_COLOR = (255, 255, 255)
 
 #  Moves
 LEFT = 'left'

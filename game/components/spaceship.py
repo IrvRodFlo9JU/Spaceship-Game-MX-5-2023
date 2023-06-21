@@ -60,3 +60,9 @@ class Spaceship:
 
     def shoot(self, bullet_handler):
         bullet_handler.add_bullet(BULLET_PLAYER_B, self.rect.center)
+
+    def reset(self):
+        self.rect.x = self.X_POS
+        self.rect.y = self.Y_POS
+        self.life = self.LIFE
+        self.is_alive = True

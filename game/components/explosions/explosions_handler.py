@@ -20,3 +20,6 @@ class ExplosionHandler:
 
     def remove_explosion(self, explosion):
         self.explosions.remove(explosion)
+
+    def reset(self):
+        self.explosions.clear()

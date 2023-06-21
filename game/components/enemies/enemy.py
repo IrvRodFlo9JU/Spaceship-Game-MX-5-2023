@@ -23,6 +23,7 @@ class Enemy:
         self.shooting_interval = shooting_interval
         self.damage = 2 
         self.life = life
+        self.is_destroyed = False
 
     def draw(self, screen):
         screen.blit(self.image, self.rect)
@@ -68,3 +69,4 @@ class Enemy:
     def die(self, explosion_handler):
         explosion_handler.generate_explosion(self.WIDTH, self.HEIGHT, self.rect.center)
         self.is_alive = False
+        self.is_destroyed = True
