@@ -7,6 +7,8 @@ class Spaceship:
     X_POS = SCREEN_WIDTH // 2 - WIDTH
     Y_POS = 500
     LIFE = 5
+    SPEED_X = 10
+    SPEED_Y = 10
 
     def __init__(self, explosion_handler):
         self.image = SPACESHIP
@@ -16,7 +18,10 @@ class Spaceship:
         self.rect.y = self.Y_POS
         self.life = self.LIFE
         self.is_alive = True
+        self.limit_plus = 0
         self.buffs = 0
+        self.speed_x = self.SPEED_X
+        self.speed_y = self.SPEED_Y
 
     def update(self, user_input, bullet_handler):
         if user_input[pygame.K_LEFT] or user_input[pygame.K_a]:
@@ -39,20 +44,20 @@ class Spaceship:
     
     def move_left(self):
         if self.rect.left > 0:
-            self.rect.x -= 10
+            self.rect.x -= self.speed_x
 
     def move_right(self):
         if self.rect.right < SCREEN_WIDTH:
-            self.rect.x += 10
+            self.rect.x += self.speed_x
     
     def move_down(self):
         if self.rect.bottom < SCREEN_HEIGHT:
-            self.rect.y += 10
+            self.rect.y += self.speed_y
 
     def move_up(self):
-        top_limit = SCREEN_HEIGHT // 2
+        top_limit = (SCREEN_HEIGHT // 2) - self.limit_plus
         if self.rect.top > top_limit:
-            self.rect.y -= 10
+            self.rect.y -= self.speed_y
 
     def hitted(self, damage, explosion_handler):
         self.life -= damage
@@ -75,10 +80,21 @@ class Spaceship:
             
     def up_life(self, buff):
         self.life += buff
+    
+    def up_difficult(self):
+        if self.limit_plus <= 50:
+            self.limit_plus += 30
+        if self.speed_x <= 25:
+            self.speed_x += 2
+        if self.speed_y <= 25:
+            self.speed_y += 1
 
     def reset(self):
         self.rect.x = self.X_POS
         self.rect.y = self.Y_POS
         self.life = self.LIFE
         self.is_alive = True
-        self.buff_shooting = 0
+        self.limit_plus = 0
+        self.buffs = 0
+        self.speed_x = self.SPEED_X
+        self.speed_y = self.SPEED_Y

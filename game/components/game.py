@@ -11,7 +11,8 @@ from game.utils import text_utils
 
 
 class Game:
-    SCORE_STEP_BUFF = 5
+    SCORE_STEP_BUFF = 7
+    SCORE_STEP_DIFFICULT = 5
 
     def __init__(self):
         pygame.init()
@@ -37,7 +38,12 @@ class Game:
         self.player_life = HeartsHandler()
         self.scores_buff = []
         self.counter_score_buffs = 1
+        self.scores_difficult = []
+        self.counter_score_difficult = 1
         self.player_buffs = 0
+        self.level = 1
+        self.levels = []
+        self.max_score = 0
 
     def run(self):
         # Game loop: events - update - draw
@@ -68,12 +74,14 @@ class Game:
             self.asteroids_handler.update(self.player, self.explosion_handler)
             self.player_life.update(self.player)
             self.score = self.enemy_handler.enemies_destroyed
+            self.difficult_controler()
             self.score_buff()
             self.player_buffs = self.player.buffs
             if not self.player.is_alive:
                 self.finish_count += 1
                 pygame.time.delay(300)
                 self.scores.append(self.score)
+                self.levels.append(self.level)
                 if self.finish_count == 1:
                     self.playing = False
                     self.number_dead += 1
@@ -91,6 +99,7 @@ class Game:
             self.asteroids_handler.draw(self.screen)
             self.draw_score()
             self.draw_buff()
+            self.draw_level()
             self.player_life.draw(self.screen)
         pygame.display.update()
         pygame.display.flip()
@@ -115,6 +124,7 @@ class Game:
             text, text_rect = text_utils.get_message("Press any key to Start", 30, WHITE_COLOR, height=500)
         else:
             self.max_score = max(self.scores)
+            self.max_level = max(self.levels)
             self.title = pygame.transform.scale(self.title, (330, 110))
             self.title_rect = self.title.get_rect()
             self.title_rect.centerx = SCREEN_WIDTH//2
@@ -123,6 +133,10 @@ class Game:
             score, score_rect = text_utils.get_message("Your score was: " + str(self.score), 18, WHITE_COLOR, height=SCREEN_HEIGHT//2 + 50)
             max_score, max_score_rect = text_utils.get_message("Max score: " + str(self.max_score), 15, WHITE_COLOR, 1000, 560)
             attempts, attempts_rect = text_utils.get_message("Attempts: " + str(self.number_dead), 15, WHITE_COLOR, 100, 560)
+            level, level_rect = text_utils.get_message("Level reached " + str(self.level), 15, WHITE_COLOR, height=SCREEN_HEIGHT//2 + 80)
+            max_level, max_level_rect = text_utils.get_message("Max level: " + str(self.max_level), 15, WHITE_COLOR, 1000, 530)
+            self.screen.blit(level, level_rect)
+            self.screen.blit(max_level, max_level_rect)
             self.screen.blit(attempts, attempts_rect)
             self.screen.blit(max_score, max_score_rect)
             self.screen.blit(score, score_rect)
@@ -141,10 +155,30 @@ class Game:
         if self.score in self.scores_buff:
             self.player.give_buff(1)
             self.scores_buff.remove(self.score)
-    
+
     def draw_buff(self):
         buff, buff_rect = text_utils.get_message("Buffs: " + str(self.player_buffs), 18, WHITE_COLOR, 1000, 80)
         self.screen.blit(buff, buff_rect) 
+    
+    def difficult_controler(self):
+        while self.counter_score_difficult <= 20:
+            self.scores_difficult.append(self.counter_score_difficult * self.SCORE_STEP_DIFFICULT)
+            self.counter_score_difficult += 1 
+        
+        if self.score in self.scores_difficult:
+            self.up_difficult()
+            self.scores_difficult.remove(self.score)
+
+    def draw_level(self):
+        level, level_rect = text_utils.get_message("Level " + str(self.level), 18, WHITE_COLOR, 1000, 120)
+        self.screen.blit(level, level_rect)
+
+    def up_difficult(self):
+        self.game_speed += 1
+        self.level += 1
+        self.player.up_difficult()
+        self.enemy_handler.up_difficult()
+        self.asteroids_handler.up_difficult()
 
     def reset(self):
         self.player.reset()
@@ -158,6 +192,10 @@ class Game:
         self.score = 0
         self.scores_buff = []
         self.counter_score_buffs = 1
+        self.scores_difficult = []
+        self.counter_score_difficult = 1
+        self.player_buffs = 0
+        self.level = 1
 
 
 

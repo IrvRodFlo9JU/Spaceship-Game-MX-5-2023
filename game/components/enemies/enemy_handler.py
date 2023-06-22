@@ -7,15 +7,13 @@ from game.utils.constants import ENEMY_SHIP, ENEMY_RANDOMSHIP, ENEMY_SIDESHIP
 
 
 class EnemyHandler:
-
-
     def __init__(self):
         self.enemies = []
         self.enemies_destroyed = 0
-        self.wave = 0
         self.enemies_options = [ENEMY_SHIP]
         self.randomship_add = False
         self.sideship_add = False
+        self.limit_enemies = 1
     
     def update(self, bullet_handler, player, explosion_handler):
         self.add_enemy()
@@ -31,7 +29,7 @@ class EnemyHandler:
             enemy.draw(screen)
 
     def add_enemy(self):
-        while len(self.enemies) <= 2:
+        while len(self.enemies) < self.limit_enemies:
             new_enemy = random.choice(self.enemies_options)
             if new_enemy == ENEMY_SHIP:
                 self.enemies.append(Ship())
@@ -39,26 +37,24 @@ class EnemyHandler:
                 self.enemies.append(Randomship())
             elif new_enemy == ENEMY_SIDESHIP:
                 self.enemies.append(Sideship())
-            self.wave += 1
-
-        if self.wave == 3 and not self.randomship_add:
-            self.enemies_options.append(ENEMY_RANDOMSHIP)
-            self.randomship_add = True
-        elif self.wave == 6 and not self.sideship_add:
-            self.enemies_options.append(ENEMY_SIDESHIP)
-            self.sideship_add = True
-    
-        self.start_wave = False
-        
     
     def remove_enemy(self, enemy):
         self.enemies.remove(enemy)
+    
+    def up_difficult(self):
+        self.limit_enemies += 1
+        if self.limit_enemies == 2 and not self.randomship_add:
+            self.enemies_options.append(ENEMY_RANDOMSHIP)
+            self.randomship_add = True
+        elif self.limit_enemies == 4 and not self.sideship_add:
+            self.enemies_options.append(ENEMY_SIDESHIP)
+            self.sideship_add = True
 
     def reset(self):
         self.enemies.clear()
         self.enemies_destroyed = 0  
-        self.wave = 0
         self.enemies_options = [ENEMY_SHIP]
         self.randomship_add = False
         self.sideship_add = False
+        self.limit_enemies = 1
     
