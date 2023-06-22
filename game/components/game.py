@@ -5,8 +5,9 @@ from game.components.spaceship import Spaceship
 from game.components.enemies.enemy_handler import EnemyHandler
 from game.components.bullets.bullet_handler import BulletHandler
 from game.components.explosions.explosions_handler import ExplosionHandler
+from game.components.hearts.hearts_handler import HeartsHandler
+from game.components.asteroids.asteroids_handle import AsteroidsHandler
 from game.utils import text_utils
-from game.components.life import Life
 
 
 class Game:
@@ -28,13 +29,15 @@ class Game:
         self.player = Spaceship(self.explosion_handler)
         self.enemy_handler = EnemyHandler()
         self.bullet_handler = BulletHandler()
+        self.asteroids_handler = AsteroidsHandler()
         self.number_dead = 0
         self.score = 0
         self.scores = []
         self.max_score = 0
-        self.player_life = Life()
+        self.player_life = HeartsHandler()
         self.scores_buff = []
         self.counter_score_buffs = 1
+        self.player_buffs = 0
 
     def run(self):
         # Game loop: events - update - draw
@@ -62,9 +65,11 @@ class Game:
             self.enemy_handler.update(self.bullet_handler, self.player, self.explosion_handler)
             self.bullet_handler.update(self.player, self.enemy_handler, self.explosion_handler)
             self.explosion_handler.update()
+            self.asteroids_handler.update(self.player, self.explosion_handler)
             self.player_life.update(self.player)
             self.score = self.enemy_handler.enemies_destroyed
             self.score_buff()
+            self.player_buffs = self.player.buffs
             if not self.player.is_alive:
                 self.finish_count += 1
                 pygame.time.delay(300)
@@ -83,7 +88,9 @@ class Game:
             self.bullet_handler.draw(self.screen)
             self.enemy_handler.draw(self.screen)
             self.explosion_handler.draw(self.screen)
+            self.asteroids_handler.draw(self.screen)
             self.draw_score()
+            self.draw_buff()
             self.player_life.draw(self.screen)
         pygame.display.update()
         pygame.display.flip()
@@ -132,8 +139,12 @@ class Game:
             self.counter_score_buffs += 1
         
         if self.score in self.scores_buff:
-            self.player.up_life(1)
+            self.player.give_buff(1)
             self.scores_buff.remove(self.score)
+    
+    def draw_buff(self):
+        buff, buff_rect = text_utils.get_message("Buffs: " + str(self.player_buffs), 18, WHITE_COLOR, 1000, 80)
+        self.screen.blit(buff, buff_rect) 
 
     def reset(self):
         self.player.reset()
@@ -141,6 +152,7 @@ class Game:
         self.enemy_handler.reset()
         self.explosion_handler.reset()
         self.player_life.reset()
+        self.asteroids_handler.reset()
         self.game_speed = 10
         self.finish_count = 0
         self.score = 0

@@ -1,5 +1,5 @@
 import pygame
-from game.utils.constants import SPACESHIP, SCREEN_HEIGHT, SCREEN_WIDTH, EXPLOSION, BULLET_PLAYER_B
+from game.utils.constants import SPACESHIP, SCREEN_HEIGHT, SCREEN_WIDTH, EXPLOSION, BULLET_PLAYER_BASIC, BULLET_PLAYER_BUFF
 
 class Spaceship:
     WIDTH = 40
@@ -16,6 +16,7 @@ class Spaceship:
         self.rect.y = self.Y_POS
         self.life = self.LIFE
         self.is_alive = True
+        self.buffs = 0
 
     def update(self, user_input, bullet_handler):
         if user_input[pygame.K_LEFT] or user_input[pygame.K_a]:
@@ -28,6 +29,10 @@ class Spaceship:
             self.move_down()
         elif user_input[pygame.K_SPACE]:
             self.shoot(bullet_handler)
+
+        if self.buffs > 0 and user_input[pygame.K_q]:
+            self.special_shoot(bullet_handler)
+            self.buffs -= 1
 
     def draw(self, screen):
         screen.blit(self.image, self.rect)
@@ -59,13 +64,21 @@ class Spaceship:
         self.is_alive = False
 
     def shoot(self, bullet_handler):
-        bullet_handler.add_bullet(BULLET_PLAYER_B, self.rect.center)
+        bullet_handler.add_bullet(BULLET_PLAYER_BASIC, self.rect.center)
+    
+    def special_shoot(self, bullet_handler):
+        bullet_handler.add_bullet(BULLET_PLAYER_BUFF, self.rect.center)
+
+    def give_buff(self, buff_life):
+        self.buffs += 1
+        self.up_life(buff_life)
+            
+    def up_life(self, buff):
+        self.life += buff
 
     def reset(self):
         self.rect.x = self.X_POS
         self.rect.y = self.Y_POS
         self.life = self.LIFE
         self.is_alive = True
-    
-    def up_life(self, buff):
-        self.life += buff
+        self.buff_shooting = 0

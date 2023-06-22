@@ -1,8 +1,8 @@
 
-from game.components.heart import Heart
+from game.components.hearts.heart import Heart
 
 
-class Life:
+class HeartsHandler:
     POS_X = 50
     POS_Y = 40
     SPACE = 5

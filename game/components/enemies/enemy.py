@@ -11,7 +11,7 @@ class Enemy:
     MOV_X = [LEFT, RIGHT]
     INTERVAL = 100
 
-    def __init__(self, image, shooting_interval, life):
+    def __init__(self, image, shooting_interval, life, points = 1):
         self.image = image
         self.rect = self.image.get_rect()
         self.rect.x = random.choice(self.X_POS_LIST)
@@ -24,6 +24,7 @@ class Enemy:
         self.damage = 2 
         self.life = life
         self.is_destroyed = False
+        self.points = points
 
     def draw(self, screen):
         screen.blit(self.image, self.rect)
@@ -34,7 +35,7 @@ class Enemy:
         self.move()
         self.shooting_time += 1
         self.shoot(bullet_handler)
-        self.crash(player, explosion_handler, bullet_handler.bullets)
+        self.crash(player, explosion_handler)
 
     def move(self):
         self.rect.y += self.SPEED_Y
@@ -56,7 +57,7 @@ class Enemy:
         if self.shooting_time % self.shooting_interval == 0:
             bullet_handler.add_bullet(BULLET_ENEMY_BASIC, self.rect.center)
 
-    def crash(self, player, explosion_handler, bullets):
+    def crash(self, player, explosion_handler):
         if self.rect.colliderect(player.rect):
             player.hitted(self.damage, explosion_handler)
             self.die(explosion_handler)

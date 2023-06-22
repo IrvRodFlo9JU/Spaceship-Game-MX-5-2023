@@ -1,7 +1,8 @@
 
-from game.utils.constants import BULLET_ENEMY_BASIC, BULLET_PLAYER_B
+from game.utils.constants import BULLET_ENEMY_BASIC, BULLET_PLAYER_BASIC, BULLET_PLAYER_BUFF
 from game.components.bullets.bullet_enemy_basic import BulletEnemyBasic
 from game.components.bullets.bullet_player_basic import BulletPlayerBasic
+from game.components.bullets.bullet_player_buff import BulletPlayerBuff
 
 class BulletHandler:
     def __init__(self):
@@ -20,8 +21,11 @@ class BulletHandler:
     def add_bullet(self, bullet_type, center):
         if bullet_type == BULLET_ENEMY_BASIC:
             self.bullets.append(BulletEnemyBasic(center))
-        elif bullet_type == BULLET_PLAYER_B:
+        elif bullet_type == BULLET_PLAYER_BASIC:
             self.bullets.append(BulletPlayerBasic(center))
+        elif bullet_type == BULLET_PLAYER_BUFF:
+            self.bullets.append(BulletPlayerBuff(center))
+        
 
     def remove_bullet(self, bullet):
         self.bullets.remove(bullet)
