@@ -6,7 +6,7 @@ class Spaceship:
     HEIGHT = 60 
     X_POS = SCREEN_WIDTH // 2 - WIDTH
     Y_POS = 500
-    LIFE = 5
+    LIFE = 20
     SPEED_X = 10
     SPEED_Y = 10
 
@@ -82,7 +82,7 @@ class Spaceship:
         self.life += buff
     
     def up_difficult(self):
-        if self.limit_plus <= 50:
+        if self.limit_plus <= 250:
             self.limit_plus += 30
         if self.speed_x <= 25:
             self.speed_x += 2

@@ -1,5 +1,5 @@
-import pygame
 
+import pygame
 from game.utils.constants import BG, ICON, SCREEN_HEIGHT, SCREEN_WIDTH, TITLE, FPS, WHITE_COLOR, TITLE_IMG
 from game.components.spaceship import Spaceship
 from game.components.enemies.enemy_handler import EnemyHandler
@@ -196,6 +196,3 @@ class Game:
         self.counter_score_difficult = 1
         self.player_buffs = 0
         self.level = 1
-
-
-

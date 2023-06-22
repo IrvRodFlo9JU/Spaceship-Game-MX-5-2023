@@ -30,6 +30,7 @@ BULLET_ENEMY_B = pygame.image.load(os.path.join(IMG_DIR, "Bullet/bullet_2.png"))
 SHIP = pygame.image.load(os.path.join(IMG_DIR, "Enemy/enemy_1.png"))
 RANDOMSHIP = pygame.image.load(os.path.join(IMG_DIR, "Enemy/enemy_2.png"))
 SIDESHIP = pygame.image.load(os.path.join(IMG_DIR, "Enemy/sideship.png"))
+BABY_BOSS = pygame.image.load(os.path.join(IMG_DIR, "Enemy/baby_boss.png"))
 
 ASTEROID_ENEMY = pygame.image.load(os.path.join(IMG_DIR, "Asteroids/asteroid_enemy.png"))
 ASTEROID_BUFF = pygame.image.load(os.path.join(IMG_DIR, "Asteroids/asteroid_buff.png"))
@@ -41,6 +42,7 @@ SHIELD_TYPE = 'shield'
 ENEMY_SHIP = "ship"
 ENEMY_RANDOMSHIP = "randomship"
 ENEMY_SIDESHIP = "sideship"
+ENEMY_BABY_BOSS = "baby boss"
 
 FONT_STYLE = 'freesansbold.ttf'
 BLACK_COLOR = (0, 0, 0)

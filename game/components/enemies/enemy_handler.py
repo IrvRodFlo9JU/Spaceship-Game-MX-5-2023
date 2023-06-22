@@ -3,7 +3,8 @@ import random
 from game.components.enemies.ship import Ship
 from game.components.enemies.randomship import Randomship
 from game.components.enemies.sideship import Sideship
-from game.utils.constants import ENEMY_SHIP, ENEMY_RANDOMSHIP, ENEMY_SIDESHIP
+from game.components.enemies.baby_boss import BabyBoss
+from game.utils.constants import ENEMY_SHIP, ENEMY_RANDOMSHIP, ENEMY_SIDESHIP, ENEMY_BABY_BOSS
 
 
 class EnemyHandler:
@@ -13,6 +14,7 @@ class EnemyHandler:
         self.enemies_options = [ENEMY_SHIP]
         self.randomship_add = False
         self.sideship_add = False
+        self.baby_boss_add = False
         self.limit_enemies = 1
     
     def update(self, bullet_handler, player, explosion_handler):
@@ -37,6 +39,8 @@ class EnemyHandler:
                 self.enemies.append(Randomship())
             elif new_enemy == ENEMY_SIDESHIP:
                 self.enemies.append(Sideship())
+            elif new_enemy == ENEMY_BABY_BOSS:
+                self.enemies.append(BabyBoss())
     
     def remove_enemy(self, enemy):
         self.enemies.remove(enemy)
@@ -49,6 +53,9 @@ class EnemyHandler:
         elif self.limit_enemies == 4 and not self.sideship_add:
             self.enemies_options.append(ENEMY_SIDESHIP)
             self.sideship_add = True
+        elif self.limit_enemies == 5 and not self.baby_boss_add:
+            self.enemies_options.append(ENEMY_BABY_BOSS)
+            self.baby_boss_add == True
 
     def reset(self):
         self.enemies.clear()
@@ -56,5 +63,6 @@ class EnemyHandler:
         self.enemies_options = [ENEMY_SHIP]
         self.randomship_add = False
         self.sideship_add = False
+        self.baby_boss_add = False
         self.limit_enemies = 1
     
