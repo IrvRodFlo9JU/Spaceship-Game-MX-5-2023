@@ -58,6 +58,7 @@ DOWN = 'down'
 BULLET_ENEMY_BASIC = "bullet enemy basic"
 BULLET_PLAYER_BASIC = "bullet player basic"
 BULLET_PLAYER_BUFF = "bullet player buff"
+BULLET_BABY_BOSS = "bullet baby boss"
 
 # Types of asteroids 
 ASTEROID_ENEMY_TYPE = "asteroid enemy"
