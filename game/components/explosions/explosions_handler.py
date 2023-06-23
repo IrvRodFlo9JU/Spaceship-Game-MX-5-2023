@@ -1,5 +1,7 @@
 
-from game.components.explosions.explosion import Explosion
+from game.components.explosions.explosion_simple import ExplosionSimple
+from game.components.explosions.explosion_buff import ExplosionBuff
+from game.utils.constants import EXPLOSION_BUFF, EXPLOSION_SIMPLE
 
 class ExplosionHandler:
     def __init__(self):
@@ -15,8 +17,11 @@ class ExplosionHandler:
         for explosion in self.explosions:
             explosion.draw(screen)
 
-    def generate_explosion(self, widht, height, center):
-        self.explosions.append(Explosion(widht, height, center))
+    def generate_explosion(self, width, height, center, type_explosion = EXPLOSION_SIMPLE):
+        if type_explosion == EXPLOSION_SIMPLE:
+            self.explosions.append(ExplosionSimple(width, height, center))
+        else:   
+            self.explosions.append(ExplosionBuff(width, height, center))
 
     def remove_explosion(self, explosion):
         self.explosions.remove(explosion)

@@ -1,6 +1,6 @@
 
 import pygame, random
-from game.utils.constants import SCREEN_WIDTH, SCREEN_HEIGHT, LEFT, RIGHT, SHIELD_TYPE
+from game.utils.constants import SCREEN_WIDTH, SCREEN_HEIGHT, LEFT, RIGHT, SHIELD_TYPE, EXPLOSION_BUFF
 
 class PowerUp:
     WIDTH = 30
@@ -46,6 +46,6 @@ class PowerUp:
                 self.move_x = LEFT
     
     def die(self, explosion_handler):
-        explosion_handler.generate_explosion(self.WIDTH, self.HEIGHT, self.rect.center)
+        explosion_handler.generate_explosion(self.WIDTH, self.HEIGHT, self.rect.center,EXPLOSION_BUFF)
         self.is_alive = False
 

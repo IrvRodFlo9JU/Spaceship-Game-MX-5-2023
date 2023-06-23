@@ -1,5 +1,5 @@
 import pygame
-from game.utils.constants import SPACESHIP, SCREEN_HEIGHT, SCREEN_WIDTH, EXPLOSION, BULLET_PLAYER_BASIC, BULLET_PLAYER_BUFF, SHIELD_TYPE, SPACESHIP_SHIELD
+from game.utils.constants import SPACESHIP, SCREEN_HEIGHT, SCREEN_WIDTH, EXPLOSION, BULLET_PLAYER_BASIC, BULLET_PLAYER_BUFF, SHIELD_TYPE, SPACESHIP_SHIELD, SPEEDY_TYPE, SPACESHIP_SPEEDY, SPACESHIP_DAMAGE, HEART_TYPE
 
 class Spaceship:
     WIDTH = 40
@@ -13,7 +13,8 @@ class Spaceship:
 
     def __init__(self, explosion_handler):
         self.image = SPACESHIP
-        self.image = pygame.transform.scale(self.image, (self.WIDTH, self.HEIGHT))
+        self.image_default = pygame.transform.scale(self.image, (self.WIDTH, self.HEIGHT))
+        self.image = self.image_default
         self.rect = self.image.get_rect()
         self.rect.x = self.X_POS
         self.rect.y = self.Y_POS
@@ -49,6 +50,7 @@ class Spaceship:
             if self.power_count % self.POWER_TIME == 0:
                 self.remove_powers()
 
+
     def draw(self, screen):
         screen.blit(self.image, self.rect)
     
@@ -70,10 +72,16 @@ class Spaceship:
             self.rect.y -= self.speed_y
 
     def hitted(self, damage, explosion_handler):
+        if self.life == 1 and damage < 0:
+            self.image = self.image_default
         if not self.has_shield:
             self.life -= damage
+        if self.life == 1:
+            self.image = SPACESHIP_DAMAGE
+            self.image = pygame.transform.scale(self.image, (self.WIDTH, self.HEIGHT))
         if self.life <= 0:
             self.die(explosion_handler)
+        
 
     def die(self, explosion_handler):
         explosion_handler.generate_explosion(self.WIDTH, self.HEIGHT, self.rect.center)
@@ -90,6 +98,8 @@ class Spaceship:
         self.up_life(buff_life)
             
     def up_life(self, buff):
+        if self.life == 1:
+            self.image = self.image_default
         self.life += buff
     
     def give_power(self, type_power):
@@ -98,13 +108,21 @@ class Spaceship:
             self.has_shield = True
             self.image = SPACESHIP_SHIELD
             self.image = pygame.transform.scale(self.image, (65, 70))
+        elif type_power == SPEEDY_TYPE:
+            self.speed_x += 8
+            self.speed_y += 6
+            self.image = SPACESHIP_SPEEDY
+            self.image = pygame.transform.scale(self.image, (self.WIDTH, self.HEIGHT))
+        elif type_power == HEART_TYPE:
+            self.up_life(2)
     
     def remove_powers(self):
-        self.image = SPACESHIP
-        self.image = pygame.transform.scale(self.image, (self.WIDTH, self.HEIGHT))
+        self.image = self.image_default
         self.power = False
         self.power_count = 0
         self.has_shield = False
+        self.speed_x = self.SPEED_X
+        self.speed_y = self.SPEED_Y
     
     def up_difficult(self):
         if self.limit_plus <= 250:
@@ -117,6 +135,7 @@ class Spaceship:
             self.power_time += 15
 
     def reset(self):
+        self.image = self.image_default
         self.rect.x = self.X_POS
         self.rect.y = self.Y_POS
         self.life = self.LIFE

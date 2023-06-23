@@ -184,6 +184,7 @@ class Game:
         self.player.up_difficult()
         self.enemy_handler.up_difficult()
         self.asteroids_handler.up_difficult()
+        self.power_up_handler.up_difficult()
 
     def reset(self):
         self.player.reset()

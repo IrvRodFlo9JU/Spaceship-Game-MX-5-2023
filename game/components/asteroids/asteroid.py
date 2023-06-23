@@ -1,6 +1,6 @@
 
 import random
-from game.utils.constants import ASTEROID_ENEMY, SCREEN_HEIGHT
+from game.utils.constants import ASTEROID_ENEMY, SCREEN_HEIGHT, EXPLOSION_BUFF, EXPLOSION_SIMPLE
 
 class Asteroid:
     Y_POS = -5
@@ -33,5 +33,9 @@ class Asteroid:
         self.rect.y += self.SPEED
     
     def die(self, explosion_handler):
-        explosion_handler.generate_explosion(self.WIDTH, self.HEIGHT, self.rect.center)
+        if self.damage <= 0:
+            type_explosion = EXPLOSION_BUFF
+        else:
+            type_explosion = EXPLOSION_SIMPLE
+        explosion_handler.generate_explosion(self.WIDTH, self.HEIGHT, self.rect.center, type_explosion)
         self.is_alive = False
