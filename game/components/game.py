@@ -1,6 +1,6 @@
 
-import pygame
-from game.utils.constants import BG, ICON, SCREEN_HEIGHT, SCREEN_WIDTH, TITLE, FPS, WHITE_COLOR, TITLE_IMG
+import pygame, random
+from game.utils.constants import BG_INICIAL, BG_1, BG_2, BG_3, BG_4, BG_5, BG_6, ICON, SCREEN_HEIGHT, SCREEN_WIDTH, TITLE, FPS, WHITE_COLOR, TITLE_IMG
 from game.components.spaceship import Spaceship
 from game.components.enemies.enemy_handler import EnemyHandler
 from game.components.bullets.bullet_handler import BulletHandler
@@ -14,11 +14,13 @@ from game.utils import text_utils
 class Game:
     SCORE_STEP_BUFF = 7
     SCORE_STEP_DIFFICULT = 5
+    BG_OPTIONS = [BG_INICIAL, BG_1, BG_2, BG_3, BG_4, BG_5, BG_6]
 
     def __init__(self):
         pygame.init()
         pygame.display.set_caption(TITLE)
         pygame.display.set_icon(ICON)
+        self.background = BG_INICIAL
         self.screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
         self.clock = pygame.time.Clock()
         self.playing = False
@@ -89,6 +91,7 @@ class Game:
                 if self.finish_count == 1:
                     self.playing = False
                     self.number_dead += 1
+                    self.background = BG_INICIAL
 
     def draw(self):
         self.draw_background()
@@ -110,7 +113,7 @@ class Game:
         pygame.display.flip()
 
     def draw_background(self):
-        image = pygame.transform.scale(BG, (SCREEN_WIDTH, SCREEN_HEIGHT))
+        image = pygame.transform.scale(self.background, (SCREEN_WIDTH, SCREEN_HEIGHT))
         image_height = image.get_height()
         self.screen.blit(image, (self.x_pos_bg, self.y_pos_bg))
         self.screen.blit(image, (self.x_pos_bg, self.y_pos_bg - image_height))
@@ -118,16 +121,23 @@ class Game:
             self.screen.blit(image, (self.x_pos_bg, self.y_pos_bg - image_height))
             self.y_pos_bg = 0
         self.y_pos_bg += self.game_speed
+    
+    def raffle_bg(self):
+        options = [0, 1, 2, 3, 4, 5, 6]
+        options.remove(self.BG_OPTIONS.index(self.background))
+        self.background = self.BG_OPTIONS[random.choice(options)]
 
     def draw_menu(self):
         if self.number_dead == 0:
             self.title = TITLE_IMG
+            self.game_speed = 8
             self.title = pygame.transform.scale(self.title, (600, 200))
             self.title_rect = self.title.get_rect()
             self.title_rect.centerx = SCREEN_WIDTH//2
             self.title_rect.centery = 200
             text, text_rect = text_utils.get_message("Press R to Start", 30, WHITE_COLOR, height=500)
         else:
+            self.game_speed = 8
             self.max_score = max(self.scores)
             self.max_level = max(self.levels)
             self.title = pygame.transform.scale(self.title, (330, 110))
@@ -181,12 +191,14 @@ class Game:
     def up_difficult(self):
         self.game_speed += 1
         self.level += 1
+        self.raffle_bg()
         self.player.up_difficult()
         self.enemy_handler.up_difficult()
         self.asteroids_handler.up_difficult()
         self.power_up_handler.up_difficult()
 
     def reset(self):
+        self.raffle_bg()
         self.player.reset()
         self.bullet_handler.reset()
         self.enemy_handler.reset()

@@ -50,7 +50,6 @@ class Spaceship:
             if self.power_count % self.POWER_TIME == 0:
                 self.remove_powers()
 
-
     def draw(self, screen):
         screen.blit(self.image, self.rect)
     
@@ -82,7 +81,6 @@ class Spaceship:
         if self.life <= 0:
             self.die(explosion_handler)
         
-
     def die(self, explosion_handler):
         explosion_handler.generate_explosion(self.WIDTH, self.HEIGHT, self.rect.center)
         self.is_alive = False
@@ -135,16 +133,11 @@ class Spaceship:
             self.power_time += 15
 
     def reset(self):
-        self.image = self.image_default
         self.rect.x = self.X_POS
         self.rect.y = self.Y_POS
         self.life = self.LIFE
         self.is_alive = True
         self.limit_plus = 0
         self.buffs = 0
-        self.speed_x = self.SPEED_X
-        self.speed_y = self.SPEED_Y
-        self.power = False
-        self.power_count = 0
         self.power_time = self.POWER_TIME
-        self.has_shield = False
+        self.remove_powers()

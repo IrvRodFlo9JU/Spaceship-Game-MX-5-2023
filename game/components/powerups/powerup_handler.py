@@ -43,10 +43,11 @@ class PowerUpHandler:
         self.power_ups.remove(power_up)
 
     def up_difficult(self):
-        if self.interval_time >= 60:
-            self.interval_time -= 20
-        if self.interval_time == self.INTERVAL_TIME - 60:
-            self.options.append(SHIELD_TYPE, HEART_TYPE)
+        if self.interval_add >= 60:
+            self.interval_add -= 20
+        if self.interval_add == self.INTERVAL_TIME - 60:
+            self.options.append(SHIELD_TYPE)
+            self.options.append(HEART_TYPE)
 
     def reset(self):
         self.power_ups.clear()
