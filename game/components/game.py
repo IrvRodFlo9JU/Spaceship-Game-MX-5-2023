@@ -7,6 +7,7 @@ from game.components.bullets.bullet_handler import BulletHandler
 from game.components.explosions.explosions_handler import ExplosionHandler
 from game.components.hearts.hearts_handler import HeartsHandler
 from game.components.asteroids.asteroids_handle import AsteroidsHandler
+from game.components.powerups.powerup_handler import PowerUpHandler
 from game.utils import text_utils
 
 
@@ -31,11 +32,12 @@ class Game:
         self.enemy_handler = EnemyHandler()
         self.bullet_handler = BulletHandler()
         self.asteroids_handler = AsteroidsHandler()
+        self.player_life = HeartsHandler()
+        self.power_up_handler = PowerUpHandler()
         self.number_dead = 0
         self.score = 0
         self.scores = []
         self.max_score = 0
-        self.player_life = HeartsHandler()
         self.scores_buff = []
         self.counter_score_buffs = 1
         self.scores_difficult = []
@@ -60,7 +62,8 @@ class Game:
             if event.type == pygame.QUIT:
                 self.running = False
                 self.playing = False
-            elif event.type == pygame.KEYDOWN and not self.playing:
+        event = pygame.key.get_pressed()
+        if event[pygame.K_r] and not self.playing:
                 self.playing = True
                 self.reset()
 
@@ -73,6 +76,7 @@ class Game:
             self.explosion_handler.update()
             self.asteroids_handler.update(self.player, self.explosion_handler)
             self.player_life.update(self.player)
+            self.power_up_handler.update(self.player, self.explosion_handler)
             self.score = self.enemy_handler.enemies_destroyed
             self.difficult_controler()
             self.score_buff()
@@ -97,6 +101,7 @@ class Game:
             self.enemy_handler.draw(self.screen)
             self.explosion_handler.draw(self.screen)
             self.asteroids_handler.draw(self.screen)
+            self.power_up_handler.draw(self.screen)
             self.draw_score()
             self.draw_buff()
             self.draw_level()
@@ -121,7 +126,7 @@ class Game:
             self.title_rect = self.title.get_rect()
             self.title_rect.centerx = SCREEN_WIDTH//2
             self.title_rect.centery = 200
-            text, text_rect = text_utils.get_message("Press any key to Start", 30, WHITE_COLOR, height=500)
+            text, text_rect = text_utils.get_message("Press R to Start", 30, WHITE_COLOR, height=500)
         else:
             self.max_score = max(self.scores)
             self.max_level = max(self.levels)
@@ -129,7 +134,7 @@ class Game:
             self.title_rect = self.title.get_rect()
             self.title_rect.centerx = SCREEN_WIDTH//2
             self.title_rect.centery = 90
-            text, text_rect = text_utils.get_message("Press any key to restart", 30, WHITE_COLOR)
+            text, text_rect = text_utils.get_message("Press R to restart", 30, WHITE_COLOR)
             score, score_rect = text_utils.get_message("Your score was: " + str(self.score), 18, WHITE_COLOR, height=SCREEN_HEIGHT//2 + 50)
             max_score, max_score_rect = text_utils.get_message("Max score: " + str(self.max_score), 15, WHITE_COLOR, 1000, 560)
             attempts, attempts_rect = text_utils.get_message("Attempts: " + str(self.number_dead), 15, WHITE_COLOR, 100, 560)
@@ -187,6 +192,7 @@ class Game:
         self.explosion_handler.reset()
         self.player_life.reset()
         self.asteroids_handler.reset()
+        self.power_up_handler.reset()
         self.game_speed = 10
         self.finish_count = 0
         self.score = 0
