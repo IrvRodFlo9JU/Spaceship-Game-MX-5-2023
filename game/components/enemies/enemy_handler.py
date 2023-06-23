@@ -27,7 +27,8 @@ class EnemyHandler:
                 self.remove_enemy(enemy) 
         
         if self.enemies_destroyed >= 100:
-            self.enemies.clear()
+            for enemy in self.enemies:
+                enemy.die(explosion_handler)
 
     def draw(self, screen):
         for enemy in self.enemies:
@@ -51,7 +52,7 @@ class EnemyHandler:
     def up_difficult(self):
         if self.limit_enemies <= 12:
             self.limit_enemies += 1
-            
+
         if self.limit_enemies == 2 and not self.randomship_add:
             self.enemies_options.append(ENEMY_RANDOMSHIP)
             self.randomship_add = True

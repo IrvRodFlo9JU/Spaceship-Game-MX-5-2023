@@ -28,6 +28,7 @@ class Spaceship:
         self.power_count = 0
         self.power_time = self.POWER_TIME
         self.has_shield = False
+        self.power_up = 'none'
 
     def update(self, user_input, bullet_handler):
         if user_input[pygame.K_LEFT] or user_input[pygame.K_a]:
@@ -47,7 +48,7 @@ class Spaceship:
         
         if self.power:
             self.power_count += 1
-            if self.power_count % self.POWER_TIME == 0:
+            if self.power_count % self.power_time == 0:
                 self.remove_powers()
 
     def draw(self, screen):
@@ -102,6 +103,7 @@ class Spaceship:
     
     def give_power(self, type_power):
         self.power = True
+        self.power_up = type_power
         if type_power == SHIELD_TYPE:
             self.has_shield = True
             self.image = SPACESHIP_SHIELD
@@ -118,9 +120,12 @@ class Spaceship:
         self.image = self.image_default
         self.power = False
         self.power_count = 0
-        self.has_shield = False
-        self.speed_x = self.SPEED_X
-        self.speed_y = self.SPEED_Y
+        if self.power_up == SHIELD_TYPE:
+            self.has_shield = False
+        elif self.power_up == SPEEDY_TYPE:
+            self.speed_x -= 8
+            self.speed_y -= 6
+        self.power_up = 'none'
     
     def up_difficult(self):
         if self.limit_plus <= 250:
