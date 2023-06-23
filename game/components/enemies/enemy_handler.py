@@ -25,13 +25,16 @@ class EnemyHandler:
                 if enemy.is_destroyed:
                     self.enemies_destroyed += enemy.points
                 self.remove_enemy(enemy) 
+        
+        if self.enemies_destroyed >= 100:
+            self.enemies.clear()
 
     def draw(self, screen):
         for enemy in self.enemies:
             enemy.draw(screen)
 
     def add_enemy(self):
-        while len(self.enemies) < self.limit_enemies:
+        while len(self.enemies) < self.limit_enemies and self.enemies_destroyed < 100:
             new_enemy = random.choice(self.enemies_options)
             if new_enemy == ENEMY_SHIP:
                 self.enemies.append(Ship())
@@ -59,7 +62,7 @@ class EnemyHandler:
 
     def reset(self):
         self.enemies.clear()
-        self.enemies_destroyed = 0  
+        self.enemies_destroyed = 0
         self.enemies_options = [ENEMY_SHIP]
         self.randomship_add = False
         self.sideship_add = False

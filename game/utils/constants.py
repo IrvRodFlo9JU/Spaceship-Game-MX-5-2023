@@ -44,6 +44,8 @@ BABY_BOSS = pygame.image.load(os.path.join(IMG_DIR, "Enemy/baby_boss.png"))
 ASTEROID_ENEMY = pygame.image.load(os.path.join(IMG_DIR, "Asteroids/asteroid_enemy.png"))
 ASTEROID_BUFF = pygame.image.load(os.path.join(IMG_DIR, "Asteroids/asteroid_buff.png"))
 
+HOME = pygame.image.load(os.path.join(IMG_DIR, 'Other/home.png'))
+
 DEFAULT_TYPE = "default"
 
 #  Types of power ups

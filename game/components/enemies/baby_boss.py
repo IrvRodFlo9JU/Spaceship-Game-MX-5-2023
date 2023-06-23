@@ -6,7 +6,7 @@ from game.utils.constants import SCREEN_HEIGHT, SCREEN_WIDTH, LEFT, RIGHT, UP, D
 class BabyBoss(Enemy):
     WIDTH = 90
     HEIGHT = 100
-    SHOOTING_TIME_SIDES = 20
+    SHOOTING_TIME_SIDES = 30
     LIFE = 8
     SPEED_X = 1
     SPEED_Y = 2

@@ -8,6 +8,7 @@ from game.components.explosions.explosions_handler import ExplosionHandler
 from game.components.hearts.hearts_handler import HeartsHandler
 from game.components.asteroids.asteroids_handle import AsteroidsHandler
 from game.components.powerups.powerup_handler import PowerUpHandler
+from game.components.home import Home
 from game.utils import text_utils
 
 
@@ -36,6 +37,7 @@ class Game:
         self.asteroids_handler = AsteroidsHandler()
         self.player_life = HeartsHandler()
         self.power_up_handler = PowerUpHandler()
+        self.home = Home()
         self.number_dead = 0
         self.score = 0
         self.scores = []
@@ -82,8 +84,9 @@ class Game:
             self.score = self.enemy_handler.enemies_destroyed
             self.difficult_controler()
             self.score_buff()
+            self.home.update(self.player)
             self.player_buffs = self.player.buffs
-            if not self.player.is_alive:
+            if not self.player.is_alive or self.home.passed:
                 self.finish_count += 1
                 pygame.time.delay(300)
                 self.scores.append(self.score)
@@ -108,6 +111,7 @@ class Game:
             self.draw_score()
             self.draw_buff()
             self.draw_level()
+            self.home.draw(self.screen)
             self.player_life.draw(self.screen)
         pygame.display.update()
         pygame.display.flip()
@@ -144,17 +148,25 @@ class Game:
             self.title_rect = self.title.get_rect()
             self.title_rect.centerx = SCREEN_WIDTH//2
             self.title_rect.centery = 90
-            text, text_rect = text_utils.get_message("Press R to restart", 30, WHITE_COLOR)
             score, score_rect = text_utils.get_message("Your score was: " + str(self.score), 18, WHITE_COLOR, height=SCREEN_HEIGHT//2 + 50)
             max_score, max_score_rect = text_utils.get_message("Max score: " + str(self.max_score), 15, WHITE_COLOR, 1000, 560)
             attempts, attempts_rect = text_utils.get_message("Attempts: " + str(self.number_dead), 15, WHITE_COLOR, 100, 560)
             level, level_rect = text_utils.get_message("Level reached " + str(self.level), 15, WHITE_COLOR, height=SCREEN_HEIGHT//2 + 80)
             max_level, max_level_rect = text_utils.get_message("Max level: " + str(self.max_level), 15, WHITE_COLOR, 1000, 530)
-            self.screen.blit(level, level_rect)
             self.screen.blit(max_level, max_level_rect)
             self.screen.blit(attempts, attempts_rect)
             self.screen.blit(max_score, max_score_rect)
-            self.screen.blit(score, score_rect)
+            if self.home.passed:
+                final, final_rect = text_utils.get_message("You have arrived home", 30, WHITE_COLOR, height=SCREEN_HEIGHT//2 - 50)
+                congratulations, congratulations_rect = text_utils.get_message("Congratulations!", 50, WHITE_COLOR, height=SCREEN_HEIGHT//2 + 15)
+                text, text_rect = text_utils.get_message("Press R to restart", 20, WHITE_COLOR, height=SCREEN_HEIGHT//2 + 125)
+                self.screen.blit(final, final_rect)
+                self.screen.blit(congratulations, congratulations_rect)
+            else:
+                text, text_rect = text_utils.get_message("Press R to restart", 30, WHITE_COLOR)
+                self.screen.blit(score, score_rect)
+                self.screen.blit(level, level_rect)
+
         self.screen.blit(self.title, self.title_rect)
         self.screen.blit(text, text_rect)
 
@@ -184,6 +196,9 @@ class Game:
             self.up_difficult()
             self.scores_difficult.remove(self.score)
 
+        if self.score >= 100:
+            self.home.is_alive = True
+
     def draw_level(self):
         level, level_rect = text_utils.get_message("Level " + str(self.level), 18, WHITE_COLOR, 1000, 120)
         self.screen.blit(level, level_rect)
@@ -198,6 +213,7 @@ class Game:
         self.power_up_handler.up_difficult()
 
     def reset(self):
+        self.home.reset()
         self.raffle_bg()
         self.player.reset()
         self.bullet_handler.reset()

@@ -6,7 +6,7 @@ class Spaceship:
     HEIGHT = 60 
     X_POS = SCREEN_WIDTH // 2 - WIDTH
     Y_POS = 500
-    LIFE = 3
+    LIFE = 5
     SPEED_X = 10
     SPEED_Y = 10
     POWER_TIME = 180
