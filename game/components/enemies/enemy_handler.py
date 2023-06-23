@@ -49,7 +49,9 @@ class EnemyHandler:
         self.enemies.remove(enemy)
     
     def up_difficult(self):
-        self.limit_enemies += 1
+        if self.limit_enemies <= 12:
+            self.limit_enemies += 1
+            
         if self.limit_enemies == 2 and not self.randomship_add:
             self.enemies_options.append(ENEMY_RANDOMSHIP)
             self.randomship_add = True
@@ -59,6 +61,9 @@ class EnemyHandler:
         elif self.limit_enemies == 5 and not self.baby_boss_add:
             self.enemies_options.append(ENEMY_BABY_BOSS)
             self.baby_boss_add == True
+        elif self.limit_enemies == 7:
+            self.enemies_options.append(ENEMY_BABY_BOSS)
+            self.enemies_options.append(ENEMY_SIDESHIP)
 
     def reset(self):
         self.enemies.clear()

@@ -10,7 +10,7 @@ class Sideship(Enemy):
     LIFE = 5
     SPEED_X = 10
     SPEED_Y = 3
-    POINTS = 2
+    POINTS = 3
 
     def __init__(self):
         self.image = SIDESHIP
